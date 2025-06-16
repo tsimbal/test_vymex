@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "vite",
+		"dev": "vite ",
 		"build": "run-p type-check \"build-only {@}\" --",
 		"preview": "vite preview",
 		"build-only": "vite build",
@@ -12,8 +12,10 @@
 	},
 	"dependencies": {
 		"@tanstack/vue-query": "^5.80.7",
+		"@tanstack/vue-query-devtools": "^5.80.7",
 		"@tanstack/vue-table": "^8.21.3",
 		"@vueuse/core": "^13.3.0",
+		"axios": "^1.10.0",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lucide-vue-next": "^0.515.0",
