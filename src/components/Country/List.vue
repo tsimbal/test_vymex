@@ -1,7 +1,7 @@
 <template>
 	<div class="country_list">
 		<div class="table_wrapper">
-			<Table>
+			<Table class="text-base">
 				<TableCaption v-if="isLoading" class="text-base"
 					>Завантаження...</TableCaption
 				>
@@ -16,7 +16,7 @@
 						</TableHead>
 					</TableRow>
 				</TableHeader>
-				<TableBody>
+				<TableBody class="max-h-[300px] overflow-y-auto">
 					<template v-if="countries?.length">
 						<TableRow v-for="country of countries" :key="country.code">
 							<TableCell

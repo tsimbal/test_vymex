@@ -1,6 +1,11 @@
 <template>
-	<div class="wrapper">
-		<Combobox by="label" v-model="selectedCountry" :ignore-filter="true">
+	<div class="wrapper w-full">
+		<Combobox
+			by="label"
+			v-model="selectedCountry"
+			:ignore-filter="true"
+			class="bg-secondary"
+		>
 			<ComboboxAnchor as-child>
 				<ComboboxTrigger as-child>
 					<div class="relative w-full max-w-sm items-center">
