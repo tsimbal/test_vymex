@@ -1,7 +1,16 @@
-import type { Country } from '@/generated/graphql.ts'
+import type { Country, GetAllCountriesQuery } from '@/graphql/generated/graphql'
 
-interface ICols {
+type CountryRow = GetAllCountriesQuery['countries'][number]
+
+export interface ICols {
 	title: string
-	key: 'name' | 'code' | 'currency'
+	field: keyof CountryRow
 	isSearch?: boolean
+	width?: string
+}
+
+export interface ICountryPaginationProps<T> {
+	defaultPage?: number
+	limit: number
+	list: T[] | undefined
 }

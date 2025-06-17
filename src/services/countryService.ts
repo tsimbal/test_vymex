@@ -8,11 +8,11 @@ import {
 } from '@/graphql/generated/graphql'
 
 class CountryService {
-	fetchCountries() {
+	async fetchCountries() {
 		return graphqlClient.request<GetAllCountriesQuery>(GetAllCountriesDocument)
 	}
 
-	searchCountriesByName(filter: CountryFilterInput) {
+	async searchCountriesByName(filter: CountryFilterInput) {
 		return graphqlClient.request<SearchCountriesQuery>(
 			SearchCountriesDocument,
 			{ filter }

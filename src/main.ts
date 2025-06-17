@@ -1,4 +1,5 @@
 import '@/assets/styles/main.css'
+import '@/assets/styles/global.css'
 
 import { createApp } from 'vue'
 import { VueQueryPlugin } from '@tanstack/vue-query'
@@ -14,7 +15,7 @@ app.use(VueQueryPlugin, {
 		defaultOptions: {
 			queries: {
 				refetchOnWindowFocus: false,
-				retry: 2
+				retry: 1
 			}
 		}
 	}

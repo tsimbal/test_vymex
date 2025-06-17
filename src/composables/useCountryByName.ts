@@ -1,31 +1,45 @@
 import countryService from '@/services/countryService'
 import { useQuery } from '@tanstack/vue-query'
 import { useDebounceFn } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, watchEffect } from 'vue'
 
 export const useCountryByName = () => {
+	const { searchCountriesByName } = countryService
+
 	const searchTerm = ref('')
-	const debounceValue = ref('')
+	const updatedSearchValue = ref('')
 
 	const debounceSearch = useDebounceFn((searchValue: string) => {
-		debounceValue.value = searchValue
+		updatedSearchValue.value = searchValue
 	}, 400)
 
 	watch(searchTerm, newTerm => {
 		debounceSearch(newTerm)
 	})
 
+	const isEnableRequest = computed(
+		() =>
+			updatedSearchValue.value.length > 1 || !updatedSearchValue.value.length
+	)
+
 	const response = useQuery({
-		queryKey: ['countryByName', debounceValue],
+		queryKey: ['countryByName', updatedSearchValue],
 		queryFn: () =>
-			countryService.searchCountriesByName({
-				name: { regex: debounceValue.value }
+			searchCountriesByName({
+				name: { regex: updatedSearchValue.value }
 			}),
-		enabled: computed(
-			() => debounceValue.value.length > 1 || !!debounceValue.value.length
-		),
+		enabled: isEnableRequest,
 		select(data) {
 			return data.countries
+		}
+	})
+
+	watchEffect(() => {
+		if (response.isError.value) {
+			console.log(
+				'Error fetching country by name: ',
+				response.error.value?.message
+			)
 		}
 	})
 

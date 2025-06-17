@@ -1,11 +1,6 @@
 <template>
-	<div class="wrapper w-full">
-		<Combobox
-			by="label"
-			v-model="selectedCountry"
-			:ignore-filter="true"
-			class="bg-secondary"
-		>
+	<div class="wrapper">
+		<Combobox by="label" v-model="selectedCountry" :ignore-filter="true">
 			<ComboboxAnchor as-child>
 				<ComboboxTrigger as-child>
 					<div class="relative w-full max-w-sm items-center">
@@ -26,11 +21,11 @@
 				</ComboboxTrigger>
 			</ComboboxAnchor>
 			<ComboboxList>
-				<ComboboxEmpty v-if="!isLoading && !isFetching && !data?.length"
+				<ComboboxEmpty v-if="isEmptyList"
 					>Країн за запитом не знайдено</ComboboxEmpty
 				>
-				<ComboboxEmpty v-if="isLoading || isFetching">Пошук...</ComboboxEmpty>
-				<ComboboxGroup v-else>
+				<ComboboxEmpty v-if="displayLoading">Пошук...</ComboboxEmpty>
+				<ComboboxGroup v-if="!isEmptyList && !displayLoading">
 					<ComboboxItem
 						v-for="country in data"
 						:key="`search_${country.code}`"
@@ -50,7 +45,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { Check, Search } from 'lucide-vue-next'
 
 import {
@@ -76,14 +71,9 @@ const {
 	searchTerm
 } = useCountryByName()
 
-const displayLoading = computed(() => {
-	return isLoading.value || isFetching.value
-})
+const displayLoading = computed(() => isLoading.value || isFetching.value)
 
-const showResults = computed(() => {
-	return (
-		searchTerm.value.length > 2 &&
-		(isLoading.value || searchTerm.value.length > 0)
-	)
-})
+const isEmptyList = computed(
+	() => !data.value?.length && !isLoading.value && !isFetching.value
+)
 </script>

@@ -1,12 +1,23 @@
 import countryService from '@/services/countryService'
 import { useQuery } from '@tanstack/vue-query'
+import { watchEffect } from 'vue'
 
 export const useCountries = () => {
-	return useQuery({
+	const { fetchCountries } = countryService
+
+	const response = useQuery({
 		queryKey: ['allCountries'],
-		queryFn: countryService.fetchCountries,
+		queryFn: fetchCountries,
 		select(data) {
 			return data.countries
 		}
 	})
+
+	watchEffect(() => {
+		if (response.isError.value) {
+			console.log('Error fetching countries: ', response.error.value?.message)
+		}
+	})
+
+	return response
 }

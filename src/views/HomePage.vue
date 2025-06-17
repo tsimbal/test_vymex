@@ -1,8 +1,8 @@
 <template>
 	<main>
 		<div class="container mx-auto">
-			<h1 class="text-center text-5xl">County list</h1>
-			<div class="search_box_wrapper flex justify-start w-64">
+			<h1 class="text-center text-5xl">Country list</h1>
+			<div class="search_box_wrapper flex justify-start">
 				<SearchBox />
 			</div>
 			<div class="table_wrapper">
