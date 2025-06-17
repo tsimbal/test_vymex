@@ -1,0 +1,14 @@
+query GetAllCountries {
+	countries {
+		code
+		name
+		currency
+	}
+}
+
+query SearchCountries($filter: CountryFilterInput) {
+	countries(filter: $filter) {
+		code
+		name
+	}
+}

@@ -1,5 +1,5 @@
 <template>
-	<div class="page_wrapper">
+	<div class="page_wrapper p-4">
 		<RouterView />
 		<VueQueryDevtools />
 	</div>

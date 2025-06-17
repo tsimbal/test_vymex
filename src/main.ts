@@ -9,6 +9,15 @@ import router from './router'
 const app = createApp(App)
 
 app.use(router)
-app.use(VueQueryPlugin)
+app.use(VueQueryPlugin, {
+	queryClientConfig: {
+		defaultOptions: {
+			queries: {
+				refetchOnWindowFocus: false,
+				retry: 2
+			}
+		}
+	}
+})
 
 app.mount('#app')
