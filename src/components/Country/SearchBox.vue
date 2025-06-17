@@ -6,6 +6,7 @@
 					<div class="relative w-full max-w-sm items-center">
 						<ComboboxInput
 							class="pl-9"
+							type="search"
 							name="country"
 							v-model="searchTerm"
 							:display-value="() => selectedCountry"

@@ -1,18 +1,18 @@
 <template>
-	<main>
-		<div class="container mx-auto">
-			<h1 class="text-center text-5xl">Country list</h1>
-			<div class="search_box_wrapper flex justify-start">
-				<SearchBox />
-			</div>
-			<div class="table_wrapper">
-				<CountryList></CountryList>
-			</div>
+	<section class="inner_wrapper">
+		<h1 class="text-center text-5xl">Список країн</h1>
+		<h2 class="caption mb-3 text-base">Пошук в Combobox</h2>
+		<div class="search_box_wrapper flex justify-start mb-6">
+			<SearchBox />
 		</div>
-	</main>
+		<div class="table_wrapper">
+			<h2 class="caption mb-2 text-base">Пошук в таблиці</h2>
+			<CountryTable />
+		</div>
+	</section>
 </template>
 
 <script setup lang="ts">
-import CountryList from '@/components/Country/List.vue'
+import CountryTable from '@/components/Country/CountryTable.vue'
 import SearchBox from '@/components/Country/SearchBox.vue'
 </script>

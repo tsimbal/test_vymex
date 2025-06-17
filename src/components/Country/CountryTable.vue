@@ -7,9 +7,17 @@
 						<TableHead
 							v-for="col of tableCols"
 							:key="`col_${col.field}`"
-							:class="cn('capitalize', `w-${col.width}`)"
+							:class="cn(['capitalize', col.width])"
 						>
-							{{ col.title }}
+							<template v-if="col.isSearch">
+								<SearchTable
+									v-model="searchTerm[col.field]"
+									v-model:field="keyBySearch"
+									:col-filed="col.field"
+									:label="col.title"
+								/>
+							</template>
+							<template v-else> {{ col.title }}</template>
 						</TableHead>
 					</TableRow>
 				</TableHeader>
@@ -24,7 +32,7 @@
 							<TableCell
 								v-for="col of tableCols"
 								:key="`cell_${country[col.field]}`"
-								:class="cn(`w-${col.width}`)"
+								:class="cn([col.width])"
 							>
 								{{ country[col.field] }}
 							</TableCell>
@@ -41,7 +49,7 @@
 						<Pagination
 							v-model:current-page="currentPage"
 							:limit="limit"
-							:list="countries"
+							:list="list"
 						/>
 					</TableCaption>
 				</TableFooter>
@@ -51,6 +59,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed, ref } from 'vue'
+import { cn } from '@/lib/utils'
+import { useCountries } from '@/composables/useCountries'
+
+import type { ICols } from './types'
 import {
 	Table,
 	TableBody,
@@ -63,33 +76,55 @@ import {
 	TableCaption
 } from '@/components/ui/table'
 import Pagination from '@/components/Country/Pagination.vue'
+import SearchTable from '@/components/Country/SearchTable.vue'
+import { useCountryWithCurrencyByName } from '@/composables/useCountryWithCurrencyByName'
 
-import { useCountries } from '@/composables/useCountries'
-import type { ICols } from './types.d'
-import { computed, ref } from 'vue'
-import { cn } from '@/lib/utils'
-
-const { data: countries, isLoading } = useCountries()
+const {
+	data: countries,
+	isLoading: isLoadingAllCountries,
+	isFetching: isFetchingAllCountries
+} = useCountries()
+const {
+	response: {
+		data: countryByName,
+		isLoading: isLoadingByName,
+		isFetching: isFetchingCountryByName
+	},
+	keyBySearch,
+	searchTerm
+} = useCountryWithCurrencyByName()
 
 const currentPage = ref(1)
 const limit = ref(15)
 
 const tableCols: ICols[] = [
-	{ title: 'Код', field: 'code', isSearch: false, width: '1/6' },
-	{ title: 'Назва країни', field: 'name', isSearch: true, width: '4/6' },
-	{ title: 'Валюта', field: 'currency', isSearch: false, width: '1/6' }
+	{ title: 'Код', field: 'code', isSearch: false, width: 'w-1/6' },
+	{ title: 'Назва країни', field: 'name', isSearch: true, width: 'w-4/6' },
+	{ title: 'Валюта', field: 'currency', isSearch: false, width: 'w-1/6' }
 ]
 
+const list = computed(() => {
+	return countryByName.value || countries.value
+})
+
+const isLoading = computed(
+	() =>
+		isLoadingAllCountries.value ||
+		isLoadingByName.value ||
+		isFetchingAllCountries.value ||
+		isFetchingCountryByName.value
+)
+
 const dataNotFound = computed(() => {
-	return !countries.value?.length && !isLoading.value
+	return !list.value?.length && !isLoading.value
 })
 
 const paginatedCountries = computed(() => {
-	if (!countries.value) return []
+	if (!list.value) return []
 
 	const start = (currentPage.value - 1) * limit.value
 	const end = start + limit.value
 
-	return countries.value?.slice(start, end) || []
+	return list.value?.slice(start, end)
 })
 </script>

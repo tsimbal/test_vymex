@@ -1,3 +1,9 @@
+# For production or development need to add .env.\* files
+
+For example
+.env.development
+VITE*APP\**="https://\*\* \_/"
+
 # test_vymex
 
 This template should help get you started developing with Vue 3 in Vite.

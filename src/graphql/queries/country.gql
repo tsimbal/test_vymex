@@ -6,6 +6,14 @@ query GetAllCountries {
 	}
 }
 
+query SearchCountriesWithCurrency($filter: CountryFilterInput) {
+	countries(filter: $filter) {
+		code
+		name
+		currency
+	}
+}
+
 query SearchCountries($filter: CountryFilterInput) {
 	countries(filter: $filter) {
 		code

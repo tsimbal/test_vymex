@@ -138,6 +138,13 @@ export type GetAllCountriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllCountriesQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', code: string, name: string, currency?: string | null }> };
 
+export type SearchCountriesWithCurrencyQueryVariables = Exact<{
+  filter?: InputMaybe<CountryFilterInput>;
+}>;
+
+
+export type SearchCountriesWithCurrencyQuery = { __typename?: 'Query', countries: Array<{ __typename?: 'Country', code: string, name: string, currency?: string | null }> };
+
 export type SearchCountriesQueryVariables = Exact<{
   filter?: InputMaybe<CountryFilterInput>;
 }>;
@@ -149,6 +156,15 @@ export type SearchCountriesQuery = { __typename?: 'Query', countries: Array<{ __
 export const GetAllCountriesDocument = gql`
     query GetAllCountries {
   countries {
+    code
+    name
+    currency
+  }
+}
+    `;
+export const SearchCountriesWithCurrencyDocument = gql`
+    query SearchCountriesWithCurrency($filter: CountryFilterInput) {
+  countries(filter: $filter) {
     code
     name
     currency
@@ -173,6 +189,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
   return {
     GetAllCountries(variables?: GetAllCountriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetAllCountriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAllCountriesQuery>({ document: GetAllCountriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetAllCountries', 'query', variables);
+    },
+    SearchCountriesWithCurrency(variables?: SearchCountriesWithCurrencyQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SearchCountriesWithCurrencyQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchCountriesWithCurrencyQuery>({ document: SearchCountriesWithCurrencyDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SearchCountriesWithCurrency', 'query', variables);
     },
     SearchCountries(variables?: SearchCountriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SearchCountriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<SearchCountriesQuery>({ document: SearchCountriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SearchCountries', 'query', variables);
