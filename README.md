@@ -2,7 +2,7 @@
 
 For example
 .env.development
-VITE*APP\**="https://\*\* \_/"
+VITE_API_BASE_API_URL="https://test.test"
 
 # test_vymex
 
